@@ -269,7 +269,31 @@ class ArgsInit(object):
             "--inference_path",
             type=str,
             help='path model for inference',
-            default='/media/SSD5/pruiz/2022-2023/PLA-Net/log/ISBI/PLA-Net/'
+            default=None
+        )
+        parser.add_argument(
+            "--target_checkpoint_path",
+            type=str,
+            help='path to the target checkpoints',
+            default=None
+        )
+        parser.add_argument(
+            "--target_list",
+            type=str,
+            help='path to the target list mappings',
+            default=None
+        )
+        parser.add_argument(
+            "--input_file_smiles",
+            type=str,
+            help='path input file with smiles for inference',
+            default=None
+        )
+        parser.add_argument(
+            "--output_file",
+            type=str,
+            help='path output file with predictions',
+            default=None
         )
 
         self.args = parser.parse_args()
