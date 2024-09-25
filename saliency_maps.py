@@ -53,7 +53,7 @@ def compute_saliency_map(model, device, loader, num_classes, args, target, num=0
 
     #    test_model_path = '/data/lrueda/Molecules-Graphs/deep_gcns_torch-master/examples/ogb/dude_dataset/log/BINARY___'+ target
     #    test_model_path = '/data/pruiz/PLA-Net/LM/BINARY_'+ target
-    test_model_path = "/media/SSD0/cigonzalez/drugs-discovery/BINARY_" + target
+    test_model_path = "/workspace/pretrained-models/BINARY_" + target
     #    test_model_path1 = test_model_path+'/Fold1/model_ckpt/BS_2560-NF_full_valid_best.pth'
     #    test_model_path2 = test_model_path+'/Fold2/model_ckpt/BS_2560-NF_full_valid_best.pth'
     #    test_model_path3 = test_model_path+'/Fold3/model_ckpt/BS_2560-NF_full_valid_best.pth'

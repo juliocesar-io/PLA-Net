@@ -1,7 +1,6 @@
 EXPERIMENT='BINARY___'
-LOAD_EXPERIMENT='/data/pruiz/PLA-Net/LM/BINARY_'
+LOAD_EXPERIMENT='/workspace/pretrained-models/BINARY_'
 FOLD='/Fold4/'
-MODEL='BS_2560-NF_full_valid_best.pth'
 TARGET='ada' # 'hivpr' 'pur2' 'tysy')
 CROSSVAL=4
 
