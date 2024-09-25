@@ -33,7 +33,9 @@ def main(args):
     
     
     data_inference = pd.read_csv(
-        args.input_file_smiles, names=["Smiles"]
+        args.input_file_smiles, 
+        names=["Smiles"],
+        header=0
     )
  
     print("========DATA INFERENCE SMILES=========")

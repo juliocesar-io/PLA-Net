@@ -19,13 +19,12 @@ def load_model(model, fold, args):
 
 @torch.no_grad()
 def test_gcn(model, device, loader,args):
-    first = True
     
     for batch in tqdm(loader, desc="Iteration"):
-        save_dict = {'Target': [],
-                 'Smiles': [],
-                 'Probability of Interaction': [],
-                 'Class Id': []}
+        save_dict = {'target': [],
+                 'smiles': [],
+                 'interaction_probability': [],
+                 'interaction_class': []}
         save_dict_temp = {
                  'Folder 1': [],
                  'Folder 2': [],
@@ -54,8 +53,8 @@ def test_gcn(model, device, loader,args):
         else:
 
             target = [args.target]*len(batch[0].y)
-            save_dict['Target'].extend(target)
-            save_dict['Smiles'].extend(smiles)
+            save_dict['target'].extend(target)
+            save_dict['smiles'].extend(smiles)
             for fold in range(1,5):
                 model = load_model(model, fold, args)
                 model.eval()
@@ -70,20 +69,18 @@ def test_gcn(model, device, loader,args):
             for fold in range(1,5):
                 save_dict_temp[f'Folder {fold}'] = np.array(save_dict_temp[f'Folder {fold}'])
 
-            save_dict['Probability of Interaction'] = np.mean([save_dict_temp['Folder 1'], save_dict_temp['Folder 2'], save_dict_temp['Folder 3'], save_dict_temp['Folder 4']], axis = 0).tolist()
-            save_dict['Class Id'] = [int(np.argmax(i)) for i in save_dict['Probability of Interaction']]
-            save_dict['Probability of Interaction'] = [x[1] for x in save_dict['Probability of Interaction']]
+            save_dict['interaction_probability'] = np.mean([save_dict_temp['Folder 1'], save_dict_temp['Folder 2'], save_dict_temp['Folder 3'], save_dict_temp['Folder 4']], axis = 0).tolist()
+            save_dict['interaction_class'] = [int(np.argmax(i)) for i in save_dict['interaction_probability']]
+            save_dict['interaction_probability'] = [x[1] for x in save_dict['interaction_probability']]
             for fold in range(1,5):
                 save_dict_temp[f'Folder {fold}'] = save_dict_temp[f'Folder {fold}'].tolist()
             
             save_df = pd.DataFrame(save_dict)
 
             save_path = os.path.join(args.output_file)
-            if first == 0:
-                save_df.to_csv(save_path, index=False)
-                first = False
-            else:
-                save_df.to_csv(save_path, mode='a', header=False, index= False)
+
+            print("Saving results to csv file: ", save_path)
+            save_df.to_csv(save_path, mode='a', header=True, index= False)
                 
                 
                 
