@@ -39,18 +39,27 @@ To run inference, run the following command:
 
 This will run inference for the target protein `ada` with the SMILES in the `input_smiles.csv` file and save the predictions to the `output_predictions.csv` file.
 
+The prediction file has the following format:
+
+```bash
+target,smiles,interaction_probability,interaction_class
+ada,Cn4c(CCC(=O)Nc3ccc2ccn(CC[C@H](CO)n1cnc(C(N)=O)c1)c2c3)nc5ccccc45,0.9994347542524338,1
+```
+
+Where `interaction_class` is 1 if the interaction probability is greater than 0.5, and 0 otherwise.
+
 ```bash
 docker run \
     -it --rm --gpus all \
-    -v "$(pwd)":/workspace \
+    -v "$(pwd)":/home/user/output \
     pla-net:latest \
-    python scripts/pla_net_inference.py \
+    python /home/user/app/scripts/pla_net_inference.py \
     --use_gpu \
     --target ada \
-    --target_list /workspace/data/datasets/AD/Targets_Fasta.csv \
-    --target_checkpoint_path /workspace/pretrained-models/BINARY_ada \
-    --input_file_smiles /workspace/example/input_smiles.csv \
-    --output_file /workspace/example/output_predictions.csv
+    --target_list /home/user/app/data/datasets/AD/Targets_Fasta.csv \
+    --target_checkpoint_path /home/user/app/pretrained-models/BINARY_ada \
+    --input_file_smiles /home/user/app/example/input_smiles.csv \
+    --output_file /home/user/output/output_predictions.csv
 ```
 
 Args:
@@ -70,7 +79,6 @@ We provide a simple graphical user interface to run PLA-Net with Gradio. To use 
 docker run \
     -it --rm --gpus all \
     -p 7860:7860 \
-    -v "$(pwd)":/workspace \
     pla-net:latest \
     python app.py
 ```
@@ -87,16 +95,16 @@ conda env create -f environment.yml
 conda activate pla-net
 ```
 
-Now you can run inference with PLA-Net.
+Now you can run inference with PLA-Net locally. In the project folder, run the following command:
 
 ```bash
 python scripts/pla_net_inference.py \
     --use_gpu \
     --target ada \
-    --target_list /workspace/data/datasets/AD/Targets_Fasta.csv \
-    --target_checkpoint_path /workspace/pretrained-models/BINARY_ada \
-    --input_file_smiles /workspace/example/input_smiles.csv \
-    --output_file /workspace/example/output_predictions.csv
+    --target_list data/datasets/AD/Targets_Fasta.csv \
+    --target_checkpoint_path pretrained-models/BINARY_ada \
+    --input_file_smiles example/input_smiles.csv \
+    --output_file example/output_predictions.csv
 ```
 
 ## Models

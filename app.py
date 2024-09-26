@@ -12,6 +12,8 @@ print("TORCH_CUDA", torch.cuda.is_available())
 
 PROJECT_URL = "https://www.nature.com/articles/s41598-022-12180-x"
 
+DEFAULT_PATH_DOCKER = "/home/user/app"
+
 def load_and_filter_data(protein_id, ligand_smiles):
     
     # generate random short id, make short
@@ -46,11 +48,11 @@ def load_and_filter_data(protein_id, ligand_smiles):
         raise gr.Error(error_msg, duration=5)
     
         # Create tmp folder
-    os.makedirs("/workspace/example/tmp", exist_ok=True)
+    os.makedirs(f"{DEFAULT_PATH_DOCKER}/example/tmp", exist_ok=True)
     
     # Save SMILES to CSV
     df = pd.DataFrame({"smiles": [s.strip() for s in smiles_list if s.strip()]})
-    df.to_csv(f"/workspace/example/tmp/{random_id}_input_smiles.csv", index=False)
+    df.to_csv(f"{DEFAULT_PATH_DOCKER}/example/tmp/{random_id}_input_smiles.csv", index=False)
     
     # Run inference
     args = ArgsInit().args
@@ -64,17 +66,17 @@ def load_and_filter_data(protein_id, ligand_smiles):
     
     args.use_gpu = True
     args.target = protein_id
-    args.target_list = "/workspace/data/datasets/AD/Targets_Fasta.csv"
-    args.target_checkpoint_path = f"/workspace/pretrained-models/BINARY_{protein_id}"
-    args.input_file_smiles = f"/workspace/example/tmp/{random_id}_input_smiles.csv"
-    args.output_file = f"/workspace/example/tmp/{random_id}_output_predictions.csv"
+    args.target_list = f"{DEFAULT_PATH_DOCKER}/data/datasets/AD/Targets_Fasta.csv"
+    args.target_checkpoint_path = f"{DEFAULT_PATH_DOCKER}/pretrained-models/BINARY_{protein_id}"
+    args.input_file_smiles = f"{DEFAULT_PATH_DOCKER}/example/tmp/{random_id}_input_smiles.csv"
+    args.output_file = f"{DEFAULT_PATH_DOCKER}/example/tmp/{random_id}_output_predictions.csv"
     
    
     print("Args: ", args)
     main(args)
     
     # Load the CSV file
-    df = pd.read_csv(f'/workspace/example/tmp/{random_id}_output_predictions.csv')
+    df = pd.read_csv(f'{DEFAULT_PATH_DOCKER}/example/tmp/{random_id}_output_predictions.csv')
     
     print("Prediction Results output: ", df)
     return df
