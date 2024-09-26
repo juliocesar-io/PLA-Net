@@ -1,0 +1,4 @@
+target,smiles,interaction_probability,interaction_class
+ada,Cn4c(CCC(=O)Nc3ccc2ccn(CC[C@H](CO)n1cnc(C(N)=O)c1)c2c3)nc5ccccc45,0.9994347542524338,1
+ada,OCCCCCn1cnc2C(O)CN=CNc12,0.9999963045120239,1
+ada,Nc4nc(c1ccco1)c3ncn(C(=O)NCCc2ccccc2)c3n4,0.043711819846066646,0
