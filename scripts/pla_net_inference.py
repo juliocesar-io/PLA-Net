@@ -5,7 +5,7 @@ import time
 from torch_geometric.data import DataLoader
 from model.model_concatenation import PLANet
 from utils.args import ArgsInit
-from notebooks.utils.model import get_dataset_inference, test_gcn
+from utils.model import get_dataset_inference, test_gcn
 
 
 def main(args):

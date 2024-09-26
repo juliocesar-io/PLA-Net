@@ -4,7 +4,7 @@ import torch
 import os
 import pandas as pd
 from rdkit import Chem
-from notebooks.scripts.pla_net_inference import main
+from scripts.pla_net_inference import main
 from utils.args import ArgsInit
 
 os.system("nvidia-smi")
@@ -46,11 +46,11 @@ def load_and_filter_data(protein_id, ligand_smiles):
         raise gr.Error(error_msg, duration=5)
     
         # Create tmp folder
-    os.makedirs("/workspace/notebooks/example/tmp", exist_ok=True)
+    os.makedirs("/workspace/example/tmp", exist_ok=True)
     
     # Save SMILES to CSV
     df = pd.DataFrame({"smiles": [s.strip() for s in smiles_list if s.strip()]})
-    df.to_csv(f"/workspace/notebooks/example/tmp/{random_id}_input_smiles.csv", index=False)
+    df.to_csv(f"/workspace/example/tmp/{random_id}_input_smiles.csv", index=False)
     
     # Run inference
     args = ArgsInit().args
@@ -66,20 +66,17 @@ def load_and_filter_data(protein_id, ligand_smiles):
     args.target = protein_id
     args.target_list = "/workspace/data/datasets/AD/Targets_Fasta.csv"
     args.target_checkpoint_path = f"/workspace/pretrained-models/BINARY_{protein_id}"
-    args.input_file_smiles = f"/workspace/notebooks/example/tmp/{random_id}_input_smiles.csv"
-    args.output_file = f"/workspace/notebooks/example/tmp/{random_id}_output_predictions.csv"
+    args.input_file_smiles = f"/workspace/example/tmp/{random_id}_input_smiles.csv"
+    args.output_file = f"/workspace/example/tmp/{random_id}_output_predictions.csv"
     
    
     print("Args: ", args)
     main(args)
     
     # Load the CSV file
-    df = pd.read_csv(f'/workspace/notebooks/example/tmp/{random_id}_output_predictions.csv')
+    df = pd.read_csv(f'/workspace/example/tmp/{random_id}_output_predictions.csv')
     
     print("Prediction Results output: ", df)
-
-    # remove file
-    # os.remove(f'/workspace/notebooks/example/tmp/{random_id}_output_predictions.csv')
     return df
 
 def load_description(fp):

@@ -1,17 +1,27 @@
-# PLA-Net: Predicting Protein-Ligand Interactions with Graph Convolutional Networks for Interpretable Pharmaceutical Discovery
+# PLA-Net: Predicting Protein-Ligand Interactions with Deep Graph Networks
 
-Paola Ruiz Puentes, Laura Rueda-Gensini, Natalia Valderrama, Isabela Hernández, Cristina González, Laura Daza, Carolina Muñoz-Camargo, Juan C. Cruz, Pablo Arbeláez
+Forked version of [PLA-Net](https://github.com/BCV-Uniandes/PLA-Net) 
 
-This repository contains the official implementation of PLA-Net: [Predicting target–ligand interactions with graph convolutional networks for interpretable pharmaceutical discovery](https://www.nature.com/articles/s41598-022-12180-x). 
+## Background
 
-## Paper
+**PLA-Net** is a deep learning model designed to predict interactions between small organic molecules (ligands) and any of the 102 target proteins in the Alzheimer's Disease (AD) dataset. By transforming molecular and protein sequences into graph representations, PLA-Net leverages Graph Convolutional Networks (GCNs) to analyze and predict target-ligand interaction probabilities. Developed by [BCV-Uniandes](https://github.com/BCV-Uniandes/PLA-Net).
 
-[Predicting target–ligand interactions with graph convolutional networks for interpretable pharmaceutical discovery](https://www.nature.com/articles/s41598-022-12180-x),<br/>
-[Paola Ruiz Puentes](https://paolaruizp.github.io)<sup>1,2</sup>, Laura Rueda-Gensini<sup>1,2</sup>, [Natalia Valderrama](https://nfvalderrama.github.io)<sup>1,2</sup>, Isabela Hernández<sup>1,2</sup>, Cristina González<sup>1,2</sup>, [Laura Daza](https://lauradaza.github.io/Laura_Daza/)<sup>1,2</sup>, Carolina Muñoz-Camargo<sup>2</sup>, Juan C. Cruz<sup>2</sup>, [Pablo Arbeláez](https://scholar.google.com.co/citations?user=k0nZO90AAAAJ&hl=en)<sup>1</sup><br/>
-Scientific Reports, 2022.<br><br>
+## Key Features
 
-<sup>1 </sup> Center  for  Research  and  Formation  in  Artificial  Intelligence .([CINFONIA](https://cinfonia.uniandes.edu.co/)),  Universidad  de  los  Andes,  Bogotá 111711, Colombia. <br/>
-<sup>2 </sup> Department  of  Biomedical  Engineering,  Universidad  de  los  Andes,  Bogotá 111711, Colombia.<br/>
+- **Graph-Based Input Representation**
+  - **Ligand Module (LM):** Converts SMILES sequences of molecules into graph representations.
+  - **Protein Module (PM):** Transforms FASTA sequences of proteins into graph structures.
+
+- **Deep Graph Convolutional Networks**
+  - Each module employs a deep GCN followed by an average pooling layer to extract meaningful features from the input graphs.
+
+- **Interaction Prediction**
+  - The feature representations from the LM and PM are concatenated.
+  - A fully connected layer processes the combined features to predict the interaction probability between the ligand and the target protein.
+
+## Quick Start
+
+If you want to run PLA-Net without installing it, you can run it freely on this [Hugging Face Space](https://huggingface.co/spaces/juliocesar-io/PLA-Net).
 
 ## Docker Install
 
@@ -34,13 +44,13 @@ docker run \
     -it --rm --gpus all \
     -v "$(pwd)":/workspace \
     pla-net:latest \
-    python notebooks/scripts/pla_net_inference.py \
+    python scripts/pla_net_inference.py \
     --use_gpu \
     --target ada \
     --target_list /workspace/data/datasets/AD/Targets_Fasta.csv \
     --target_checkpoint_path /workspace/pretrained-models/BINARY_ada \
-    --input_file_smiles /workspace/notebooks/example/input_smiles.csv \
-    --output_file /workspace/notebooks/example/output_predictions.csv
+    --input_file_smiles /workspace/example/input_smiles.csv \
+    --output_file /workspace/example/output_predictions.csv
 ```
 
 Args:
@@ -52,40 +62,52 @@ Args:
 - `input_file_smiles`: Path to the input SMILES file.
 - `output_file`: Path to the output predictions file.
 
-## Local Install
-The following steps are required in order to run PLA-Net in a local environment:<br />
+
+### Gradio Server
+We provide a simple graphical user interface to run PLA-Net with Gradio. To use it, run the following command:
 
 ```bash
-$ export PATH=/usr/local/cuda-11.0/bin:$PATH <br />
-$ export LD_LIBRARY_PATH=/usr/local/cuda-11.0/lib64:$LD_LIBRARY_PATH <br />
+docker run \
+    -it --rm --gpus all \
+    -p 7860:7860 \
+    -v "$(pwd)":/workspace \
+    pla-net:latest \
+    python app.py
+```
 
-$ conda create --name PLA-Net <br />
-$ conda activate PLA-Net <br />
+Then open your browser and go to `http://localhost:7860/` to access the web interface. 
 
-$ bash env.sh
+    
+## Local Install
+
+To do inference with PLA-Net, you need to install the dependencies and activate the environment. You can do this by running the following commands:
+
+```bash
+conda env create -f environment.yml
+conda activate pla-net
+```
+
+Now you can run inference with PLA-Net.
+
+```bash
+python scripts/pla_net_inference.py \
+    --use_gpu \
+    --target ada \
+    --target_list /workspace/data/datasets/AD/Targets_Fasta.csv \
+    --target_checkpoint_path /workspace/pretrained-models/BINARY_ada \
+    --input_file_smiles /workspace/example/input_smiles.csv \
+    --output_file /workspace/example/output_predictions.csv
 ```
 
 ## Models
-We provide trained models available for download in the following [link](http://157.253.243.19/PLA-Net/).
 
-## Usage
+You can download the pre-trained models from [Hugging Face](https://huggingface.co/juliocesar-io/PLA-Net).
+## Training 
+
 To train each of the components of our method: LM, LM+Advs, LMPM and PLA-Net please refer to planet.sh file and run the desired models.
 
 To evaluate each of the components of our method: LM, LM+Advs, LMPM and PLA-Net please run the corresponding bash file in the inference folder.
 
 ## Citation
 
-We hope you find our paper useful. To cite us, please use the following BibTeX entry:
-
-```
-@article{ruiz2022predicting,
-  title={Predicting target--ligand interactions with graph convolutional networks for interpretable pharmaceutical discovery},
-  author={Ruiz Puentes, Paola and Rueda-Gensini, Laura and Valderrama, Natalia and Hern{\'a}ndez, Isabela and Gonz{\'a}lez, Cristina and Daza, Laura and Mu{\~n}oz-Camargo, Carolina and Cruz, Juan C and Arbel{\'a}ez, Pablo},
-  journal={Scientific reports},
-  volume={12},
-  number={1},
-  pages={1--17},
-  year={2022},
-  publisher={Nature Publishing Group}
-}
-```
+Ruiz Puentes, P., Rueda-Gensini, L., Valderrama, N. et al. Predicting target–ligand interactions with graph convolutional networks for interpretable pharmaceutical discovery. Sci Rep 12, 8434 (2022). https://doi.org/10.1038/s41598-022-12180-x
