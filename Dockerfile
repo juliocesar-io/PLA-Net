@@ -1,13 +1,8 @@
-# Use NVIDIA PyTorch image as the base
-FROM nvcr.io/nvidia/pytorch:22.03-py3
+FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 
-RUN apt-get update && apt-get install -y libxrender1
-
-# Base pytorch 
-RUN conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoolkit=11.6 -c pytorch -c conda-forge
-
-# Set required versions for each core dependency using cu116
-RUN pip install torch-scatter==2.0.9 torch-sparse==0.6.14 torch-cluster==1.6.0 torch-spline-conv==1.2.1 torch-geometric==2.1.0 -f https://data.pyg.org/whl/torch-1.12.0+cu116.html
+RUN apt-get update && apt-get install -y libxrender1 build-essential
+RUN pip install torch-sparse -f https://data.pyg.org/whl/torch-1.13.1+cu116.html
+RUN pip install torch-scatter==2.0.9  torch-cluster==1.6.0 torch-spline-conv==1.2.1 torch-geometric==2.1.0 -f https://data.pyg.org/whl/torch-1.13.1+cu116.html
 
 # Create a new user named "user" with UID 1000
 RUN useradd -m -u 1000 user
