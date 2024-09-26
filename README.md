@@ -37,17 +37,6 @@ docker build -t pla-net:latest .
 
 To run inference, run the following command:
 
-This will run inference for the target protein `ada` with the SMILES in the `input_smiles.csv` file and save the predictions to the `output_predictions.csv` file.
-
-The prediction file has the following format:
-
-```bash
-target,smiles,interaction_probability,interaction_class
-ada,Cn4c(CCC(=O)Nc3ccc2ccn(CC[C@H](CO)n1cnc(C(N)=O)c1)c2c3)nc5ccccc45,0.9994347542524338,1
-```
-
-Where `interaction_class` is 1 if the interaction probability is greater than 0.5, and 0 otherwise.
-
 ```bash
 docker run \
     -it --rm --gpus all \
@@ -62,7 +51,20 @@ docker run \
     --output_file /home/user/output/output_predictions.csv
 ```
 
-Args:
+
+This will run inference for the target protein `ada` with the SMILES in the `input_smiles.csv` file and save the predictions to the `output_predictions.csv` file.
+
+The prediction file has the following format:
+
+```bash
+target,smiles,interaction_probability,interaction_class
+ada,Cn4c(CCC(=O)Nc3ccc2ccn(CC[C@H](CO)n1cnc(C(N)=O)c1)c2c3)nc5ccccc45,0.9994347542524338,1
+```
+
+Where `interaction_class` is 1 if the interaction probability is greater than 0.5, and 0 otherwise.
+
+
+*Inference Args:*
 
 - `use_gpu`: Use GPU for inference.
 - `target`: Target protein ID from the list of targets. Check the list of available targets in the [data](https://github.com/juliocesar-io/PLA-Net/blob/main/data/datasets/AD/Targets_Fasta.csv) folder.
