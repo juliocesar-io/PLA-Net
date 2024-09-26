@@ -9,8 +9,15 @@ RUN conda install pytorch==1.12.0 torchvision==0.13.0 torchaudio==0.12.0 cudatoo
 # Set required versions for each core dependency using cu116
 RUN pip install torch-scatter==2.0.9 torch-sparse==0.6.14 torch-cluster==1.6.0 torch-spline-conv==1.2.1 torch-geometric==2.1.0 -f https://data.pyg.org/whl/torch-1.12.0+cu116.html
 
-# Copy all files
+ENV PYTHONUNBUFFERED=1 \
+    GRADIO_ALLOW_FLAGGING=never \
+    GRADIO_NUM_PORTS=1 \
+    GRADIO_SERVER_NAME=0.0.0.0 \
+    GRADIO_THEME=huggingface \
+    SYSTEM=spaces
+
 COPY . .
+
 RUN pip install .
 
 # Set the default command to bash

@@ -15,15 +15,6 @@ def main(args):
     else:
         device = torch.device('cpu')
     
-    args.nclasses = 2
-    
-    args.batch_size = 10
-    args.use_prot = True
-    args.freeze_molecule = True
-    args.conv_encode_edge = True
-    args.learn_t = True
-    args.binary = True
-    
     #Numpy and torch seeds
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
@@ -38,18 +29,14 @@ def main(args):
         header=0
     )
  
-    print("========DATA INFERENCE SMILES=========")
-    print(data_inference)
-    print("========DATA INFERENCE SMILES=========")
+    print("Data Inference: ", data_inference)
 
     data_target = pd.read_csv(
         args.target_list, names=["Fasta", "Target", "Label"]
     )
     data_target = data_target[data_target.Target == args.target]
-            
-    print("========DATA TARGET AA PROTEIN SEQUENCE=========")
-    print(data_target)
-    print("========DATA TARGET AA PROTEIN SEQUENCE=========")
+
+    print("Data Target: ", data_target)
 
     test = get_dataset_inference(
         data_inference,
@@ -81,9 +68,15 @@ def main(args):
 
 
 if __name__ == "__main__":
-    cls_criterion = torch.nn.BCELoss()
-    reg_criterion = torch.nn.MSELoss()
-
     args = ArgsInit().args
-
+    # Default args for inference
+    
+    args.nclasses = 2
+    args.batch_size = 10
+    args.use_prot = True
+    args.freeze_molecule = True
+    args.conv_encode_edge = True
+    args.learn_t = True
+    args.binary = True
+    
     main(args)

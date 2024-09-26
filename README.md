@@ -13,8 +13,47 @@ Scientific Reports, 2022.<br><br>
 <sup>1 </sup> Center  for  Research  and  Formation  in  Artificial  Intelligence .([CINFONIA](https://cinfonia.uniandes.edu.co/)),  Universidad  de  los  Andes,  Bogotá 111711, Colombia. <br/>
 <sup>2 </sup> Department  of  Biomedical  Engineering,  Universidad  de  los  Andes,  Bogotá 111711, Colombia.<br/>
 
-## Installation
-The following steps are required in order to run PLA-Net:<br />
+## Docker Install
+
+To prevent conflicts with the host machine, it is recommended to run PLA-Net in a Docker container.
+
+First make sure you have an NVIDIA GPU and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) installed. Then build the image with the following command:
+
+```bash
+docker build -t pla-net:latest .
+```
+
+### Inference
+
+To run inference, run the following command:
+
+This will run inference for the target protein `ada` with the SMILES in the `input_smiles.csv` file and save the predictions to the `output_predictions.csv` file.
+
+```bash
+docker run \
+    -it --rm --gpus all \
+    -v "$(pwd)":/workspace \
+    pla-net:latest \
+    python notebooks/scripts/pla_net_inference.py \
+    --use_gpu \
+    --target ada \
+    --target_list /workspace/data/datasets/AD/Targets_Fasta.csv \
+    --target_checkpoint_path /workspace/pretrained-models/BINARY_ada \
+    --input_file_smiles /workspace/notebooks/example/input_smiles.csv \
+    --output_file /workspace/notebooks/example/output_predictions.csv
+```
+
+Args:
+
+- `use_gpu`: Use GPU for inference.
+- `target`: Target protein ID from the list of targets. Check the list of available targets in the [data](https://github.com/juliocesar-io/PLA-Net/blob/main/data/datasets/AD/Targets_Fasta.csv) folder.
+- `target_list`: Path to the target list CSV file.
+- `target_checkpoint_path`: Path to the target checkpoint. (e.g. `/workspace/pretrained-models/BINARY_ada`) one checkpoint for each target.
+- `input_file_smiles`: Path to the input SMILES file.
+- `output_file`: Path to the output predictions file.
+
+## Local Install
+The following steps are required in order to run PLA-Net in a local environment:<br />
 
 ```bash
 $ export PATH=/usr/local/cuda-11.0/bin:$PATH <br />
