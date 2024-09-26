@@ -113,7 +113,8 @@ python scripts/pla_net_inference.py \
 
 ## Models
 
-You can download the pre-trained models from [Hugging Face](https://huggingface.co/juliocesar-io/PLA-Net).
+You can download the pre-trained models from the [Hugging Face Model Card](https://huggingface.co/juliocesar-io/PLA-Net/tree/main/checkpoints).
+
 ## Training 
 
 To train each of the components of our method: LM, LM+Advs, LMPM and PLA-Net please refer to planet.sh file and run the desired models.
