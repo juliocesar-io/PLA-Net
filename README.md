@@ -6,6 +6,12 @@ Forked version of [PLA-Net](https://github.com/BCV-Uniandes/PLA-Net)
 
 **PLA-Net** is a deep learning model designed to predict interactions between small organic molecules (ligands) and any of the 102 target proteins in the Alzheimer's Disease (AD) dataset. By transforming molecular and protein sequences into graph representations, PLA-Net leverages Graph Convolutional Networks (GCNs) to analyze and predict target-ligand interaction probabilities. Developed by [BCV-Uniandes](https://github.com/BCV-Uniandes/PLA-Net).
 
+## Quick Start
+
+If you want to run PLA-Net without installing it, you can run it freely on this [Hugging Face Space](https://huggingface.co/spaces/juliocesar-io/PLA-Net).
+
+![](./gradio/home.png)
+
 ## Key Features
 
 - **Graph-Based Input Representation**
@@ -18,10 +24,6 @@ Forked version of [PLA-Net](https://github.com/BCV-Uniandes/PLA-Net)
 - **Interaction Prediction**
   - The feature representations from the LM and PM are concatenated.
   - A fully connected layer processes the combined features to predict the interaction probability between the ligand and the target protein.
-
-## Quick Start
-
-If you want to run PLA-Net without installing it, you can run it freely on this [Hugging Face Space](https://huggingface.co/spaces/juliocesar-io/PLA-Net).
 
 ## Docker Install
 
