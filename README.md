@@ -12,6 +12,8 @@ If you want to run PLA-Net without installing it, you can run it freely on this 
 
 ![](./gradio/home.png)
 
+You can also use the provided notebook in the `notebooks` folder to run inference on the PLA-Net model with the gradio client. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1HI_yfqxYKMl6CuF_61u-4PF615pKjyXF?usp=sharing)
+
 ## Key Features
 
 - **Graph-Based Input Representation**
