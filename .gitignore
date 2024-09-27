@@ -4,3 +4,5 @@ tmp
 output_predictions.csv
 .ipynb_checkpoints
 .Trash-*
+*.egg-info
+*.pyc

@@ -1,7 +1,0 @@
-data
-gcn_lib
-inference
-model
-notebooks
-scripts
-utils
