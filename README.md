@@ -2,6 +2,11 @@
 
 Forked version of [PLA-Net](https://github.com/BCV-Uniandes/PLA-Net) 
 
+[![Open in HuggingFace](https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/juliocesar-io/PLA-Net)
+
+
+### [Original paper on Nature Scientific Reports](https://www.nature.com/articles/s41598-022-12180-x)
+
 ## Background
 
 **PLA-Net** is a deep learning model designed to predict interactions between small organic molecules (ligands) and any of the 102 target proteins in the Alzheimer's Disease (AD) dataset. By transforming molecular and protein sequences into graph representations, PLA-Net leverages Graph Convolutional Networks (GCNs) to analyze and predict target-ligand interaction probabilities. Developed by [BCV-Uniandes](https://github.com/BCV-Uniandes/PLA-Net).
@@ -98,7 +103,7 @@ To do inference with PLA-Net, you need to install the dependencies and activate 
 
 ```bash
 mamba env create -f environment.yml
-mamba activate pla-net
+mamba activate pla_net
 ```
 
 Now you can run inference with PLA-Net locally. In the project folder, run the following command:
