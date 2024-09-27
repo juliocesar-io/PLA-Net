@@ -94,11 +94,11 @@ Then open your browser and go to `http://localhost:7860/` to access the web inte
     
 ## Local Install
 
-To do inference with PLA-Net, you need to install the dependencies and activate the environment. You can do this by running the following commands:
+To do inference with PLA-Net, you need to install the dependencies and activate the environment. You can use conda or mamba to install the dependencies. mamba is recommended because it is faster.
 
 ```bash
-conda env create -f environment.yml
-conda activate pla-net
+mamba env create -f environment.yml
+mamba activate pla-net
 ```
 
 Now you can run inference with PLA-Net locally. In the project folder, run the following command:
@@ -112,6 +112,21 @@ python scripts/pla_net_inference.py \
     --input_file_smiles example/input_smiles.csv \
     --output_file example/output_predictions.csv
 ```
+
+## Local Notebook Inside Docker Container
+
+You can also run inference and training experiments with PLA-Net locally using a notebook. In the project folder, run the following command:
+
+```bash
+docker run \
+    -it --rm --gpus all \
+    -p 8888:8888 \
+    -v "$(pwd)":/home/user/app \
+    pla-net:latest \
+    jupyter lab --ip 0.0.0.0 --port 8888 
+```
+
+Go to `http://0.0.0.0:8888/lab/tree/notebooks/PLA-Net-Local.ipynb`, you will be prompted to enter a token, you can get the token from the terminal where the command was run.
 
 ## Models
 

@@ -2,3 +2,5 @@ __pycache__
 log
 tmp
 output_predictions.csv
+.ipynb_checkpoints
+.Trash-*
