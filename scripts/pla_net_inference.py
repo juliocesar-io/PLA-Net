@@ -51,6 +51,8 @@ def main(args):
                             num_workers=args.num_workers)
 
     model = PLANet(args).to(device)
+    
+    print(model)
 
 
     print('Model inference in: {}'.format(args.inference_path))

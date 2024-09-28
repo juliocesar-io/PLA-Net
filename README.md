@@ -118,9 +118,11 @@ python scripts/pla_net_inference.py \
     --output_file example/output_predictions.csv
 ```
 
-## Local Notebook Inside Docker Container
+## Jupyter Notebooks Experiments
 
-You can also run inference and training experiments with PLA-Net locally using a notebook. In the project folder, run the following command:
+The notebook [PLA-Net-Local.ipynb](https://github.com/juliocesar-io/PLA-Net/blob/main/notebooks/PLA-Net-Local.ipynb) contains the code to run inference and training experiments with PLA-Net.
+
+In the project folder, run the following command if you are using a docker container:
 
 ```bash
 docker run \
@@ -129,6 +131,12 @@ docker run \
     -v "$(pwd)":/home/user/app \
     pla-net:latest \
     jupyter lab --ip 0.0.0.0 --port 8888 
+```
+
+If you are not using a docker container, you can run the notebook directly in your local machine. While on the notebooks folder, run the following command:
+
+```bash
+jupyter lab --ip 0.0.0.0 --port 8888 
 ```
 
 Go to `http://0.0.0.0:8888/lab/tree/notebooks/PLA-Net-Local.ipynb`, you will be prompted to enter a token, you can get the token from the terminal where the command was run.

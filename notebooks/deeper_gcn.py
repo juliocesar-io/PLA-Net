@@ -10,14 +10,14 @@ from gcn_lib.sparse.torch_message import GenMessagePassing, MsgNorm
 
 class DeeperGCN(torch.nn.Module):
     def __init__(self, hidden_channels, num_layers=20, mlp_layers=3,
-                 msg_norm=False, learn_msg_scale=False, conv_encode_edge=False, 
-                 dropout=0.0, block='res', add_virtual_node=False, 
-                 conv='gen', aggr='mean', t=1.0, learn_t=False, p=1.0, 
-                 learn_p=False, norm='batch', graph_pooling='sum', nclasses=10, 
-                 is_prot=False, hidden_channels_prot=None, 
-                 num_layers_prot=None, mlp_layers_prot=None, 
-                 msg_norm_prot=None, learn_msg_scale_prot=None, 
-                 conv_encode_edge_prot=None, saliency=False):
+                 msg_norm=False, learn_msg_scale=False, conv_encode_edge=True, 
+                 dropout=0.0, block='res+', add_virtual_node=False, 
+                 conv='gen', aggr='softmax', t=1.0, learn_t=True, p=1.0, 
+                 learn_p=False, norm='batch', graph_pooling='mean', nclasses=2, 
+                 is_prot=False, hidden_channels_prot=128, 
+                 num_layers_prot=20, mlp_layers_prot=3, 
+                 msg_norm_prot=False, learn_msg_scale_prot=False, 
+                 conv_encode_edge_prot=False, saliency=False):
 
         super(DeeperGCN, self).__init__()
 
@@ -67,8 +67,8 @@ class DeeperGCN(torch.nn.Module):
                 gcn = GENConv(
                     hidden_channels,
                     hidden_channels,
-                    aggr=aggr,
                     advs=False,
+                    aggr=aggr,
                     t=t,
                     learn_t=self.learn_t,
                     p=p,
@@ -201,7 +201,7 @@ class GENConv(GenMessagePassing):
      GENeralized Graph Convolution (GENConv): https://arxiv.org/pdf/2006.07739.pdf
      SoftMax  &  PowerMean Aggregation
     """
-    def __init__(self, in_dim, emb_dim, advs,
+    def __init__(self, in_dim, emb_dim, advs=False,
                  aggr='softmax',
                  t=1.0, learn_t=False,
                  p=1.0, learn_p=False,
