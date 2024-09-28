@@ -47,6 +47,8 @@ def main(args):
         saliency=False,
     )
     
+    print("Dataset inference: ", test)
+    
     test_loader = DataLoader(test, batch_size=args.batch_size, shuffle=False,
                             num_workers=args.num_workers)
 

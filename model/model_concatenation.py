@@ -64,18 +64,27 @@ class PLANet(torch.nn.Module):
 
         molecule_features = self.molecule_gcn(molecule)
         target_features = self.target_gcn(target)
+        print("Molecule features: ", molecule_features)
+        print("Target features: ", target_features)
         # Multiplier
         if self.args.multi_concat:
+            print("Multiplier: ", self.multiplier_prot, self.multiplier_ligand)
             All_features = (
                 target_features * self.multiplier_prot
                 + molecule_features * self.multiplier_ligand
             )
         else:
+            print(molecule_features.shape, target_features.shape)
+            
             # Concatenation of LM and PM modules
             All_features = torch.cat((molecule_features, target_features), dim=1)
+            print("Concatenation features: ", All_features)
             All_features = self.concatenation_gcn(All_features)
+            print("Concatenation layer shape: ", All_features.shape)
         # Classification
         classification = self.classification(All_features)
+        
+        print("Classification features: ", classification)
 
         return classification
 

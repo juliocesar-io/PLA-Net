@@ -14,8 +14,12 @@ class DeeperGCN(torch.nn.Module):
     def __init__(self, args, is_prot=False, saliency=False):
         super(DeeperGCN, self).__init__()
 
+        print("Initializing DeeperGCN model")
+        print("Self: ", self)
+
         # Set PM configuration
         if is_prot:
+            print("Initializing Protein model")
             self.num_layers = args.num_layers_prot
             mlp_layers = args.mlp_layers_prot
             hidden_channels = args.hidden_channels_prot
@@ -25,6 +29,7 @@ class DeeperGCN(torch.nn.Module):
 
         # Set LM configuration
         else:
+            print("Initializing Ligand model")
             self.num_layers = args.num_layers
             mlp_layers = args.mlp_layers
             hidden_channels = args.hidden_channels
@@ -113,6 +118,7 @@ class DeeperGCN(torch.nn.Module):
             self.atom_encoder = AtomEncoder(emb_dim=hidden_channels)
 
         if not self.conv_encode_edge:
+            print("Initializing BondEncoder")
             self.bond_encoder = BondEncoder(emb_dim=hidden_channels)
 
         # Set type of pooling
@@ -129,6 +135,11 @@ class DeeperGCN(torch.nn.Module):
         self.graph_pred_linear = torch.nn.Linear(hidden_channels, num_classes)
 
     def forward(self, input_batch, dropout=True, embeddings=False):
+        print("Forwarding DeeperGCN model")
+        print("Input batch: ", input_batch)
+        print("Dropout: ", dropout)
+        print("Embeddings: ", embeddings)
+        
 
         x = input_batch.x
         edge_index = input_batch.edge_index
@@ -214,9 +225,15 @@ class DeeperGCN(torch.nn.Module):
         h_graph = self.pool(h, batch)
 
         if self.args.use_prot or embeddings:
+            print("Returning h_graph")
+            print("Self: ", self)
             return h_graph
         else:
+            print("Returning graph_pred_linear")
+            print("Self: ", self)
             return self.graph_pred_linear(h_graph)
+        
+        
 
     def print_params(self, epoch=None, final=False):
 

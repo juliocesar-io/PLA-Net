@@ -20,9 +20,13 @@ class DeeperGCN(torch.nn.Module):
                  conv_encode_edge_prot=False, saliency=False):
 
         super(DeeperGCN, self).__init__()
+        
+        print("Initializing DeeperGCN model")
+        print("Self: ", self)
 
         # Set PM configuration
         if is_prot:
+            print("Initializing Protein model")
             self.num_layers = num_layers_prot
             mlp_layers = mlp_layers_prot
             hidden_channels = hidden_channels_prot
@@ -31,6 +35,7 @@ class DeeperGCN(torch.nn.Module):
             self.conv_encode_edge = conv_encode_edge_prot
         # Set LM configuration
         else:
+            print("Initializing Ligand model")
             self.num_layers = num_layers
             hidden_channels = hidden_channels
             self.msg_norm = msg_norm
@@ -52,6 +57,17 @@ class DeeperGCN(torch.nn.Module):
             "Aggr aggregation method {}".format(aggr),
             "block: {}".format(self.block),
         )
+        if self.block == "res+":
+            print("LN/BN->ReLU->GraphConv->Res")
+        elif self.block == "res":
+            print("GraphConv->LN/BN->ReLU->Res")
+        elif self.block == "dense":
+            raise NotImplementedError("To be implemented")
+        elif self.block == "plain":
+            print("GraphConv->LN/BN->ReLU")
+        else:
+            raise Exception("Unknown block Type")
+        
         self.gcns = torch.nn.ModuleList()
         self.norms = torch.nn.ModuleList()
 
@@ -86,12 +102,15 @@ class DeeperGCN(torch.nn.Module):
             self.norms.append(norm_layer(norm, hidden_channels))
 
         # Set embbeding layers
+        self.atom_encoder = AtomEncoder(emb_dim=hidden_channels)
+        # Set embbeding layers
         if saliency:
             self.atom_encoder = MM_AtomEncoder(emb_dim=hidden_channels)
         else:
             self.atom_encoder = AtomEncoder(emb_dim=hidden_channels)
 
         if not self.conv_encode_edge:
+            print("Initializing BondEncoder")
             self.bond_encoder = BondEncoder(emb_dim=hidden_channels)
 
         # Set type of pooling
@@ -108,6 +127,10 @@ class DeeperGCN(torch.nn.Module):
         self.graph_pred_linear = torch.nn.Linear(hidden_channels, nclasses)
 
     def forward(self, input_batch, dropout=True, embeddings=False):
+        print("Forwarding DeeperGCN model")
+        print("Input batch: ", input_batch)
+        print("Dropout: ", dropout)
+        print("Embeddings: ", embeddings)
 
         x = input_batch.x
         edge_index = input_batch.edge_index
@@ -168,12 +191,29 @@ class DeeperGCN(torch.nn.Module):
                 h2 = self.norms[layer](h1)
                 h = F.relu(h2) + h
                 h = F.dropout(h, p=self.dropout, training=self.training)
+                
+        elif self.block == "dense":
+            raise NotImplementedError("To be implemented")
+
+        elif self.block == "plain":
+
+            h = F.relu(self.norms[0](self.gcns[0](h, edge_index, edge_emb)))
+            h = F.dropout(h, p=self.dropout, training=self.training)
+
+            for layer in range(1, self.num_layers):
+                h1 = self.gcns[layer](h, edge_index, edge_emb)
+                h2 = self.norms[layer](h1)
+                if layer != (self.num_layers - 1):
+                    h = F.relu(h2)
+                else:
+                    h = h2
+                h = F.dropout(h, p=self.dropout, training=self.training)
+        else:
+            raise Exception("Unknown block Type")
 
         h_graph = self.pool(h, batch)
-        if embeddings:
-            return h_graph
-        else:
-            return self.graph_pred_linear(h_graph)
+
+        return h_graph
 
     def print_params(self, epoch=None, final=False):
         if self.learn_t:
@@ -248,3 +288,33 @@ class GENConv(GenMessagePassing):
                     self.edge_encoder = BondEncoder(emb_dim=in_dim)
             else:
                 self.edge_encoder = torch.nn.Linear(edge_feat_dim, in_dim)
+                
+    def forward(self, x, edge_index, edge_attr=None):
+        x = x
+
+        if self.encode_edge and edge_attr is not None:
+            edge_emb = self.edge_encoder(edge_attr)
+        else:
+            edge_emb = edge_attr
+
+        m = self.propagate(edge_index, x=x, edge_attr=edge_emb)
+
+        if self.msg_norm is not None:
+            m = self.msg_norm(x, m)
+
+        h = x + m
+        out = self.mlp(h)
+
+        return out
+
+    def message(self, x_j, edge_attr=None):
+
+        if edge_attr is not None:
+            msg = x_j + edge_attr
+        else:
+            msg = x_j
+
+        return self.msg_encoder(msg) + self.eps
+
+    def update(self, aggr_out):
+        return aggr_out
