@@ -183,7 +183,7 @@ checkpoints/
 
 ## Training 
 
-To do training, please refer to the [train.sh](https://github.com/juliocesar-io/PLA-Net/blob/main/train.sh) script. There you can set the models to train, the targets and other parameters. Use the `TARGET` variable to set the target protein and `EXPERIMENT` to set the experiment name. Review the parameters and run the script.
+To do training, refer to the [train.sh](https://github.com/juliocesar-io/PLA-Net/blob/main/train.sh) script. There you can set the models to train, the targets and other parameters. Use the `TARGET` variable to set the target protein and `EXPERIMENT` to set the experiment name. Review the parameters and run the script.
 
 To start training, run the following command:
 
