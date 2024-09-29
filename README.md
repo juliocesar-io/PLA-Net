@@ -55,7 +55,7 @@ docker run \
     --use_gpu \
     --target ada \
     --target_list /home/user/app/data/datasets/AD/Targets_Fasta.csv \
-    --target_checkpoint_path /home/user/app/pretrained-models/BINARY_ada \
+    --target_checkpoint_path /home/user/app/example/checkpoints/BINARY_ada \
     --input_file_smiles /home/user/app/example/input_smiles.csv \
     --output_file /home/user/output/output_predictions.csv
 ```
@@ -113,7 +113,7 @@ python scripts/pla_net_inference.py \
     --use_gpu \
     --target ada \
     --target_list data/datasets/AD/Targets_Fasta.csv \
-    --target_checkpoint_path pretrained-models/BINARY_ada \
+    --target_checkpoint_path example/checkpoints/BINARY_ada \
     --input_file_smiles example/input_smiles.csv \
     --output_file example/output_predictions.csv
 ```
