@@ -76,7 +76,7 @@ Where `interaction_class` is 1 if the interaction probability is greater than 0.
 *Inference Args:*
 
 - `use_gpu`: Use GPU for inference.
-- `target`: Target protein ID from the list of targets. Check the list of available targets in the [data](https://github.com/juliocesar-io/PLA-Net/blob/main/data/datasets/AD/Targets_Fasta.csv) folder.
+- `target`: Target protein ID from the list of targets. Check the list of available targets in the [data/targets.md](./data/targets.md) file.
 - `target_list`: Path to the target list CSV file.
 - `target_checkpoint_path`: Path to the target checkpoint. (e.g. `/workspace/pretrained-models/BINARY_ada`) one checkpoint for each target.
 - `input_file_smiles`: Path to the input SMILES file.
