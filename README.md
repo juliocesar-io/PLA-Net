@@ -160,7 +160,7 @@ There are 4 models available:
 - `PLA-Net`: Ligand Module + Protein Module + PLA-Net trained on the AD dataset.
 
 
-Each of them has 101 target proteins models with 4 fold cross-validation. The folder structure is the following:
+Each of them has 102 [targets](./data/targets.md) models with 4 fold cross-validation. The folder structure is the following:
 
 ```bash
 checkpoints/
