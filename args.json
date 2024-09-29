@@ -27,8 +27,8 @@
   "graph_pooling": "mean",
   "model_save_path": "model_ckpt",
   "save": "EXP",
-  "model_load_init_path": "/media/SSD5/pruiz/home/Best_Models",
-  "model_load_prot_init_path": "/media/SSD5/pruiz/home/Best_Models",
+  "model_load_init_path": "/home/Best_Models",
+  "model_load_prot_init_path": "/home/Best_Models",
   "model_load_path": "Checkpoint_Last_model.pth",
   "resume": false,
   "cross_val": 0,
@@ -56,5 +56,5 @@
   "init_adv_training": false,
   "advs": false,
   "saliency": false,
-  "inference_path": "/media/SSD0/cigonzalez/drugs-discovery/"
+  "inference_path": "/"
 }

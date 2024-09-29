@@ -141,15 +141,63 @@ jupyter lab --ip 0.0.0.0 --port 8888
 
 Go to `http://0.0.0.0:8888/lab/tree/notebooks/PLA-Net-Local.ipynb`, you will be prompted to enter a token, you can get the token from the terminal where the command was run.
 
-## Models
+## Pre-trained Models Weights
 
-You can download the pre-trained models from the [Hugging Face Model Card](https://huggingface.co/juliocesar-io/PLA-Net/tree/main/checkpoints).
+You can download the pre-trained models from [HuggingFace](https://huggingface.co/juliocesar-io/PLA-Net/tree/main/checkpoints). The total size of all models is around 55GB. 
+
+
+```bash
+git clone https://huggingface.co/juliocesar-io/PLA-Net
+```
+
+Whhen running inference update the `--target_checkpoint_path` parameter with your path, model name and target.
+
+There are 4 models available:
+
+- `LM`: Ligand Module trained on the AD dataset.
+- `LM+Advs`: Ligand Module trained on the AD dataset with adversarial training.
+- `LMPM`: Protein Module trained on the AD dataset using the weights of the Ligand Module.
+- `PLA-Net`: Ligand Module + Protein Module + PLA-Net trained on the AD dataset.
+
+
+Each of them has 101 target proteins models with 4 fold cross-validation. The folder structure is the following:
+
+```bash
+checkpoints/
+    LM/
+        BINARY_ada/
+            Fold1/
+                Best_Model.pth
+            Fold2/
+                Best_Model.pth
+            ...
+        ...
+    LM+Advs/
+        ...
+    LMPM/
+        ...
+    PLA-Net/
+        ...
+```
+
 
 ## Training 
 
-To train each of the components of our method: LM, LM+Advs, LMPM and PLA-Net please refer to planet.sh file and run the desired models.
+To do training, please refer to the [train.sh](https://github.com/juliocesar-io/PLA-Net/blob/main/train.sh) script. There you can set the models to train, the targets and other parameters. Use the `TARGET` variable to set the target protein and `EXPERIMENT` to set the experiment name. Review the parameters and run the script.
 
-To evaluate each of the components of our method: LM, LM+Advs, LMPM and PLA-Net please run the corresponding bash file in the inference folder.
+To start training, run the following command:
+
+```bash
+bash train.sh
+```
+
+Then you can run evaluation for each of the models with the scripts in the `evaluation` folder. For example, to run evaluation for the `PLA-Net` model, you can run the following command:
+
+```bash
+bash evaluation/PLA-Net.sh
+```
+
+
 
 ## Citation
 
