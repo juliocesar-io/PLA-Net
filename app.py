@@ -67,7 +67,7 @@ def load_and_filter_data(protein_id, ligand_smiles):
     args.use_gpu = True
     args.target = protein_id
     args.target_list = f"{DEFAULT_PATH_DOCKER}/data/datasets/AD/Targets_Fasta.csv"
-    args.target_checkpoint_path = f"{DEFAULT_PATH_DOCKER}/pretrained-models/BINARY_{protein_id}"
+    args.target_checkpoint_path = f"{DEFAULT_PATH_DOCKER}/example/checkpoints/BINARY_{protein_id}"
     args.input_file_smiles = f"{DEFAULT_PATH_DOCKER}/example/tmp/{random_id}_input_smiles.csv"
     args.output_file = f"{DEFAULT_PATH_DOCKER}/example/tmp/{random_id}_output_predictions.csv"
     
