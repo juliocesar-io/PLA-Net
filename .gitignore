@@ -6,3 +6,4 @@ output_predictions.csv
 .Trash-*
 *.egg-info
 *.pyc
+.DS_Store
